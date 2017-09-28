@@ -50,4 +50,33 @@ class UserController extends Controller
             ]);
         }
     }
+    /**
+     * Handle user registration
+     *
+     * User post the credential
+     *
+     * @param Type $var Description
+     * @return Response JSON
+     **/
+    public function register(Request $request)
+    {
+        $user = new User;
+        $user->role_id = 2;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->photo = 'default.jpg';
+        
+        if ($user->save()) {
+            return response()->json([
+                'status_code' => 1,
+                'message' => 'Registration success'
+            ]);
+        } else {
+            return response()->json([
+                'status_code' => 0,
+                'message' => 'Registration failed'
+            ]);
+        }
+    }
 }

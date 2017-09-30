@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\EventSubCategory;
+use App\EventMainCategory;
 use Illuminate\Http\Request;
 
-class EventSubCategoryController extends Controller
+class EventMainCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class EventSubCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\EventSubCategory  $eventSubCategory
+     * @param  \App\EventMainCategory  $eventMainCategory
      * @return \Illuminate\Http\Response
      */
-    public function show(EventSubCategory $eventSubCategory)
+    public function show(EventMainCategory $eventMainCategory)
     {
         //
     }
@@ -52,10 +52,10 @@ class EventSubCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\EventSubCategory  $eventSubCategory
+     * @param  \App\EventMainCategory  $eventMainCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(EventSubCategory $eventSubCategory)
+    public function edit(EventMainCategory $eventMainCategory)
     {
         //
     }
@@ -64,10 +64,10 @@ class EventSubCategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\EventSubCategory  $eventSubCategory
+     * @param  \App\EventMainCategory  $eventMainCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EventSubCategory $eventSubCategory)
+    public function update(Request $request, EventMainCategory $eventMainCategory)
     {
         //
     }
@@ -75,10 +75,10 @@ class EventSubCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\EventSubCategory  $eventSubCategory
+     * @param  \App\EventMainCategory  $eventMainCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EventSubCategory $eventSubCategory)
+    public function destroy(EventMainCategory $eventMainCategory)
     {
         //
     }

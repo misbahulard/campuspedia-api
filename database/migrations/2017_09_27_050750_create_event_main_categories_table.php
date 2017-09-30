@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEventSubCategoriesTable extends Migration
+class CreateEventMainCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateEventSubCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('event_sub_categories', function (Blueprint $table) {
-            $table->increments('category_sub_id');
+        Schema::create('event_main_categories', function (Blueprint $table) {
+            $table->increments('main_category_id');
             $table->string('name');
-            // $table->timestamps();
+//            $table->timestamps();
         });
     }
 
@@ -27,6 +27,6 @@ class CreateEventSubCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('event_sub_categories');
+        Schema::dropIfExists('event_main_categories');
     }
 }

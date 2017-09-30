@@ -33,7 +33,7 @@ class CreateRelations extends Migration
         });
 
         Schema::table('event_categories', function (Blueprint $table){
-            $table->foreign('category_sub_id')->references('category_sub_id')->on('event_sub_categories');
+            $table->foreign('main_category_id')->references('main_category_id')->on('event_main_categories');
         });
 
     }

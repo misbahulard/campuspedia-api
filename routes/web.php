@@ -15,4 +15,10 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/event', 'EventController');
+
+Route::resource('/event-categories', 'EventCategoryController');
+
+Route::resource('/event-main-categories', 'EventMainCategoryController');
+
+Route::resource('/campuses', 'CampusController');

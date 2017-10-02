@@ -19,7 +19,7 @@ class CreateEventsTable extends Migration
             $table->integer('event_location_id')->unsigned();
             $table->integer('campus_id')->unsigned();
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->string('photo');
             $table->date('event_date');
             $table->integer('status');

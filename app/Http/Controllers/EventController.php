@@ -8,13 +8,23 @@ use Illuminate\Http\Request;
 class EventController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('/events/index');
     }
 
     /**
@@ -24,7 +34,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        return view('/events/create');
     }
 
     /**
@@ -35,7 +45,28 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
+        $this->validate($request, [
+            'name' => 'required',
+            'event_date' => 'required',
+            'description' => 'required',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $event = new Event;
+        $event->name = $request->name;
+        $event->event_date = $request->event_date;
+        $event->status = 1;
+
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('events');
+            $image->move($destinationPath, $name);
+            $event->photo = $name;
+
+            return back()->with('success','Image Upload successfully');
+        }
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Campus;
+use App\CampusLocation;
 use Illuminate\Http\Request;
 
 class CampusController extends Controller
@@ -14,7 +15,7 @@ class CampusController extends Controller
      */
     public function index()
     {
-        //
+        return view('campuses/index');
     }
 
     /**
@@ -24,7 +25,7 @@ class CampusController extends Controller
      */
     public function create()
     {
-        //
+        return view('campuses/create');
     }
 
     /**
@@ -35,7 +36,43 @@ class CampusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request);
+        $this->validate($request, [
+            'name' => 'required',
+            'web' => 'required',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'street_address' => 'required',
+            'postal_code' => 'required',
+            'city' => 'required',
+            'state_province' => 'required'
+        ]);
+
+        $location = new CampusLocation;
+        $location->street_address = $request->street_address;
+        $location->postal_code = $request->postal_code;
+        $location->city = $request->city;
+        $location->state_province = $request->state_province;
+        $location->latitude = '-7.2763161';
+        $location->longtitude = '112.7917436';
+        $location->save();
+
+        $campus = new Campus;
+        $campus->campus_location_id = $location->campus_location_id;
+        $campus->name = $request->name;
+        $campus->web = $request->web;
+
+        if ($request->hasFile('logo')) {
+            $image = $request->file('logo');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/img/campuses');
+            $image->move($destinationPath, $name);
+            $campus->logo = $name;
+        } else {
+            $campus->logo = 'default.jpg';
+        }
+
+        $campus->save();
+        return redirect('campuses')->with('status', 'New campus has been created!');
     }
 
     /**
@@ -57,7 +94,7 @@ class CampusController extends Controller
      */
     public function edit(Campus $campus)
     {
-        //
+        return view('campuses/edit');
     }
 
     /**

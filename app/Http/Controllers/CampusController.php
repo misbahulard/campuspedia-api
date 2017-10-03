@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Campus;
 use App\CampusLocation;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 
 class CampusController extends Controller
@@ -15,7 +16,8 @@ class CampusController extends Controller
      */
     public function index()
     {
-        return view('campuses/index');
+        $campuses = Campus::paginate(5);
+        return view('campuses/index', compact('campuses'));
     }
 
     /**
@@ -36,7 +38,6 @@ class CampusController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
         $this->validate($request, [
             'name' => 'required',
             'web' => 'required',
@@ -78,10 +79,10 @@ class CampusController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Campus  $campus
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Campus $campus)
+    public function show($id)
     {
         //
     }
@@ -89,34 +90,76 @@ class CampusController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Campus  $campus
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Campus $campus)
+    public function edit($id)
     {
-        return view('campuses/edit');
+        $campus = Campus::find($id);
+        return view('campuses/edit', compact('campus'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Campus  $campus
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Campus $campus)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'web' => 'required',
+            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'street_address' => 'required',
+            'postal_code' => 'required',
+            'city' => 'required',
+            'state_province' => 'required'
+        ]);
+
+        $campus = Campus::find($id);
+        $location = CampusLocation::find($campus->campus_location_id);
+
+        $location->street_address = $request->street_address;
+        $location->postal_code = $request->postal_code;
+        $location->city = $request->city;
+        $location->state_province = $request->state_province;
+        $location->latitude = '-7.2763161';
+        $location->longtitude = '112.7917436';
+        $location->save();
+
+        $campus->campus_location_id = $location->campus_location_id;
+        $campus->name = $request->name;
+        $campus->web = $request->web;
+
+        if ($request->hasFile('logo')) {
+            $image = $request->file('logo');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/img/campuses');
+            if ($campus->logo != 'default.jpg') {
+                File::delete();
+            }
+            $image->move($destinationPath, $name);
+            $campus->logo = $name;
+        }
+
+        $campus->save();
+        return redirect('campuses')->with('status', 'campus has been updated!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Campus  $campus
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Campus $campus)
+    public function destroy($id)
     {
-        //
+        $campus = Campus::find($id);
+        $location = CampusLocation::find($campus->campus_location_id);
+        $campus->delete();
+        $location->delete();
+        return redirect('campuses')->with('status', 'Delete success!');
     }
 }

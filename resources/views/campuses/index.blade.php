@@ -31,8 +31,40 @@
                             <a href="campuses/create" class="btn btn-primary">Create campus</a>
                         </p>
 
-                        {{-- TODO: Display campus list here--}}
-                        Campus list here
+                        <h4>Campuses</h4>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Web</th>
+                                <th>Logo</th>
+                                <th colspan="2" width="20%">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($campuses as $campus)
+                                <tr>
+                                    <td>{{$campus->campus_id}}</td>
+                                    <td>{{$campus->name}}</td>
+                                    <td>{{$campus->web}}</td>
+                                    <td><img src="/img/campuses/{{$campus->logo}}" class="img-thumbnail" width="50px" height="auto"></td>
+                                    <td>
+                                        <a href="{{url("campuses/$campus->campus_id/edit")}}"
+                                           class="btn btn-success">Edit</a>
+                                    </td>
+                                    <td>
+                                        <form action="{{action('CampusController@destroy', $campus->campus_id)}}"
+                                              method="post">
+                                            {{csrf_field()}}
+                                            {{method_field('DELETE')}}
+                                            <button class="btn btn-danger" type="submit">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

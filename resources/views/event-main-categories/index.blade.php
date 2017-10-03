@@ -9,7 +9,7 @@
 
                     <ul class="list-group">
                         <a href="/" class="list-group-item">Dashboard</a>
-                        <a href="/events" class="list-group-item active">Event</a>
+                        <a href="/event" class="list-group-item active">Event</a>
                         <a href="/event-categories" class="list-group-item">Event Category</a>
                         <a href="/event-suggestions" class="list-group-item">Event Suggestion</a>
                         <a href="/campuses" class="list-group-item">Campus</a>

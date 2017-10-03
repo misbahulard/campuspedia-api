@@ -45,7 +45,9 @@ class CampusController extends Controller
             'street_address' => 'required',
             'postal_code' => 'required',
             'city' => 'required',
-            'state_province' => 'required'
+            'state_province' => 'required',
+            'latitude' => 'required',
+            'longtitude' => 'required'
         ]);
 
         $location = new CampusLocation;
@@ -115,7 +117,9 @@ class CampusController extends Controller
             'street_address' => 'required',
             'postal_code' => 'required',
             'city' => 'required',
-            'state_province' => 'required'
+            'state_province' => 'required',
+            'latitude' => 'required',
+            'longtitude' => 'required'
         ]);
 
         $campus = Campus::find($id);

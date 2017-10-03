@@ -42,7 +42,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="event_date">Date</label>
-                                <input type="date" class="form-control" id="event_date" name="event_date" value="{{$event->event_date}}">
+                                <input type="date" class="form-control" id="event_date" name="event_date"
+                                       value="{{$event->event_date}}">
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
@@ -74,23 +75,35 @@
                             </div>
                             <div class="form-group">
                                 <label for="postal_code">Postal Code</label>
-                                <input type="number" class="form-control" id="postal_code" name="postal_code">
+                                <input type="number" class="form-control" id="postal_code" name="postal_code"
+                                       value="{{$event->location->postal_code}}">
                             </div>
                             <div class="form-group">
                                 <label for="city">City</label>
                                 <input type="text" class="form-control" id="city" name="city"
-                                       placeholder="city">
+                                       placeholder="city" value="{{$event->location->city}}">
                             </div>
                             <div class="form-group">
                                 <label for="state_province">State Province</label>
                                 <input type="text" class="form-control" id="state_province" name="state_province"
-                                       placeholder="State Province">
+                                       placeholder="State Province" value="{{$event->location->state_province}}">
                             </div>
                             <div class="form-group">
                                 <label for="photo">Photo</label>
                                 <input type="file" id="photo" name="photo">
                                 <p class="help-block">upload event photo / poster here</p>
                             </div>
+                            <div class="form-group">
+                                <label for="state_province">Latitude</label>
+                                <input type="text" class="form-control" id="latitude" name="latitude"
+                                       value="{{$event->location->latitude}}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="state_province">Latitude</label>
+                                <input type="text" class="form-control" id="longtitude" name="longtitude"
+                                       value="{{$event->location->longtitude}}" readonly>
+                            </div>
+                            <div id="map"></div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
 
@@ -100,4 +113,43 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('custom-js')
+    <script>
+        function initMap() {
+            var lat = parseFloat(document.getElementById('latitude').value);
+            var lng = parseFloat(document.getElementById('longtitude').value);
+            if (!isNaN(lat) && !isNaN(lng)) {
+                var pos = {lat: lat, lng: lng};
+            } else {
+                var pos = {lat: -7.258502, lng: 112.751810};
+            }
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: pos,
+            });
+
+            var marker = new google.maps.Marker({
+                draggable: true,
+                position: pos,
+                map: map,
+            });
+
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                document.getElementById('latitude').value = event.latLng.lat();
+                document.getElementById('longtitude').value = event.latLng.lng();
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                document.getElementById('latitude').value = event.latLng.lat();
+                document.getElementById('longtitude').value = event.latLng.lng();
+                marker.setPosition(event.latLng);
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtqb2S0R5L-jBWGyuwhhgF51fMu2q1mlk&callback=initMap">
+    </script>
 @endsection

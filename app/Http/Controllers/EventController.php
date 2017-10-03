@@ -7,6 +7,7 @@ use App\Event;
 use App\EventCategory;
 use App\EventLocation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class EventController extends Controller
 {
@@ -59,7 +60,9 @@ class EventController extends Controller
             'street_address' => 'required',
             'postal_code' => 'required',
             'city' => 'required',
-            'state_province' => 'required'
+            'state_province' => 'required',
+            'latitude' => 'required',
+            'longtitude' => 'required'
         ]);
 
         $location = new EventLocation;
@@ -87,7 +90,7 @@ class EventController extends Controller
             $image->move($destinationPath, $name);
             $event->photo = $name;
         } else {
-            $event->logo = 'default.jpg';
+            $event->photo = 'default.jpg';
         }
 
         $event->save();
@@ -128,7 +131,51 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'event_date' => 'required',
+            'description' => 'required',
+            'photo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'street_address' => 'required',
+            'postal_code' => 'required',
+            'city' => 'required',
+            'state_province' => 'required',
+            'latitude' => 'required',
+            'longtitude' => 'required'
+        ]);
+
+        $event = Event::find($id);
+        $location = EventLocation::find($event->event_location_id);
+
+        $location->street_address = $request->street_address;
+        $location->postal_code = $request->postal_code;
+        $location->city = $request->city;
+        $location->state_province = $request->state_province;
+        $location->latitude = $request->latitude;
+        $location->longtitude = $request->longtitude;
+        $location->save();
+
+        $event->category_id = $request->category_id;
+        $event->event_location_id = $location->event_location_id;
+        $event->campus_id = $request->campus_id;
+        $event->name = $request->name;
+        $event->event_date = $request->event_date;
+        $event->description = $request->description;
+        $event->status = 1;
+
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/img/events');
+            if ($event->photo != 'default.jpg') {
+                File::delete($destinationPath . '/' . $event->photo);
+            }
+            $image->move($destinationPath, $name);
+            $event->photo = $name;
+        }
+
+        $event->save();
+        return redirect('event')->with('status', 'Event has been updated!');
     }
 
     /**
@@ -139,6 +186,10 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event = Event::find($id);
+        $location = EventLocation::find($event->event_location_id);
+        $event->delete();
+        $location->delete();
+        return redirect('event')->with('status', 'Delete success!');
     }
 }

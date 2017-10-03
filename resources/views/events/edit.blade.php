@@ -9,8 +9,8 @@
 
                     <ul class="list-group">
                         <a href="/" class="list-group-item">Dashboard</a>
-                        <a href="/event" class="list-group-item">Event</a>
-                        <a href="/event-categories" class="list-group-item active">Event Category</a>
+                        <a href="/event" class="list-group-item active">Event</a>
+                        <a href="/event-categories" class="list-group-item">Event Category</a>
                         <a href="/event-suggestions" class="list-group-item">Event Suggestion</a>
                         <a href="/campuses" class="list-group-item">Campus</a>
                     </ul>
@@ -18,7 +18,7 @@
             </div>
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Create Event</div>
+                    <div class="panel-heading">Edit Event {{$event->name}}</div>
 
                     <div class="panel-body">
                         @if ($errors->any())
@@ -31,26 +31,25 @@
                             </div>
                         @endif
 
-                        <form enctype="multipart/form-data" method="post" action="{{url('event')}}">
+                        <form enctype="multipart/form-data" method="post"
+                              action="{{action('EventController@update', $event->event_id)}}">
                             {{csrf_field()}}
+                            {{method_field('PATCH')}}
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Event Name">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Event Name"
+                                       value="{{$event->name}}">
                             </div>
                             <div class="form-group">
                                 <label for="event_date">Date</label>
-                                <input type="date" class="form-control" id="event_date" name="event_date">
+                                <input type="date" class="form-control" id="event_date" name="event_date" value="{{$event->event_date}}">
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea class="form-control" id="description" name="description"
                                           placeholder="Descriptions">
+                                    {{$event->description}}
                                 </textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="photo">Photo</label>
-                                <input type="file" id="photo" name="photo">
-                                <p class="help-block">upload event photo / poster here</p>
                             </div>
                             <div class="form-group">
                                 <label for="category_id">Category</label>
@@ -71,7 +70,7 @@
                             <div class="form-group">
                                 <label for="street_address">Street Address</label>
                                 <input type="text" class="form-control" id="street_address" name="street_address"
-                                       placeholder="Street Address">
+                                       placeholder="Street Address" value="{{$event->location->street_address}}">
                             </div>
                             <div class="form-group">
                                 <label for="postal_code">Postal Code</label>
@@ -88,58 +87,17 @@
                                        placeholder="State Province">
                             </div>
                             <div class="form-group">
-                                <label for="state_province">Latitude</label>
-                                <input type="text" class="form-control" id="latitude" name="latitude" readonly>
+                                <label for="photo">Photo</label>
+                                <input type="file" id="photo" name="photo">
+                                <p class="help-block">upload event photo / poster here</p>
                             </div>
-                            <div class="form-group">
-                                <label for="state_province">Latitude</label>
-                                <input type="text" class="form-control" id="longtitude" name="longtitude" readonly>
-                            </div>
-                            <div id="map"></div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@endsection
-
-@section('custom-js')
-    <script>
-        function initMap() {
-            var lat = parseFloat(document.getElementById('latitude').value);
-            var lng = parseFloat(document.getElementById('longtitude').value);
-            if (!isNaN(lat) && !isNaN(lng)) {
-                var pos = {lat: lat, lng: lng};
-            } else {
-                var pos = {lat: -7.258502, lng: 112.751810};
-            }
-
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 12,
-                center: pos,
-            });
-
-            var marker = new google.maps.Marker({
-                draggable: true,
-                position: pos,
-                map: map,
-            });
-
-            google.maps.event.addListener(marker, 'dragend', function (event) {
-                document.getElementById('latitude').value = event.latLng.lat();
-                document.getElementById('longtitude').value = event.latLng.lng();
-            });
-
-            google.maps.event.addListener(map, 'click', function (event) {
-                document.getElementById('latitude').value = event.latLng.lat();
-                document.getElementById('longtitude').value = event.latLng.lng();
-                marker.setPosition(event.latLng);
-            });
-        }
-    </script>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtqb2S0R5L-jBWGyuwhhgF51fMu2q1mlk&callback=initMap">
-    </script>
 @endsection

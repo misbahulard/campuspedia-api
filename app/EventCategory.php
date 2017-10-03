@@ -4,6 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Event Category model
+ * For Event Category eloquent
+ * primary key @primaryKey category_id
+ * @package App
+ */
 class EventCategory extends Model
 {
     protected $primaryKey = 'category_id';

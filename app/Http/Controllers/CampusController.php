@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Campus;
 use App\CampusLocation;
-use Illuminate\Http\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class CampusController extends Controller
 {
@@ -33,7 +33,7 @@ class CampusController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -53,8 +53,8 @@ class CampusController extends Controller
         $location->postal_code = $request->postal_code;
         $location->city = $request->city;
         $location->state_province = $request->state_province;
-        $location->latitude = '-7.2763161';
-        $location->longtitude = '112.7917436';
+        $location->latitude = $request->latitude;
+        $location->longtitude = $request->longtitude;
         $location->save();
 
         $campus = new Campus;
@@ -64,7 +64,7 @@ class CampusController extends Controller
 
         if ($request->hasFile('logo')) {
             $image = $request->file('logo');
-            $name = time().'.'.$image->getClientOriginalExtension();
+            $name = time() . '.' . $image->getClientOriginalExtension();
             $destinationPath = public_path('/img/campuses');
             $image->move($destinationPath, $name);
             $campus->logo = $name;
@@ -102,7 +102,7 @@ class CampusController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
@@ -125,8 +125,8 @@ class CampusController extends Controller
         $location->postal_code = $request->postal_code;
         $location->city = $request->city;
         $location->state_province = $request->state_province;
-        $location->latitude = '-7.2763161';
-        $location->longtitude = '112.7917436';
+        $location->latitude = $request->latitude;
+        $location->longtitude = $request->longtitude;
         $location->save();
 
         $campus->campus_location_id = $location->campus_location_id;
@@ -135,10 +135,10 @@ class CampusController extends Controller
 
         if ($request->hasFile('logo')) {
             $image = $request->file('logo');
-            $name = time().'.'.$image->getClientOriginalExtension();
+            $name = time() . '.' . $image->getClientOriginalExtension();
             $destinationPath = public_path('/img/campuses');
             if ($campus->logo != 'default.jpg') {
-                File::delete();
+                File::delete($destinationPath . '/' . $campus->logo);
             }
             $image->move($destinationPath, $name);
             $campus->logo = $name;

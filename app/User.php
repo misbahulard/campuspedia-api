@@ -5,6 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * User model
+ * For User eloquent
+ * primary key @primaryKey user_id
+ * @package App
+ */
 class User extends Authenticatable
 {
     use Notifiable;

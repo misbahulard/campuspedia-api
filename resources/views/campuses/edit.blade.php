@@ -10,9 +10,9 @@
                     <ul class="list-group">
                         <a href="/" class="list-group-item">Dashboard</a>
                         <a href="/event" class="list-group-item">Event</a>
-                        <a href="/event-categories" class="list-group-item active">Event Category</a>
+                        <a href="/event-categories" class="list-group-item">Event Category</a>
                         <a href="/event-suggestions" class="list-group-item">Event Suggestion</a>
-                        <a href="/campuses" class="list-group-item">Campus</a>
+                        <a href="/campuses" class="list-group-item active">Campus</a>
                     </ul>
                 </div>
             </div>
@@ -71,6 +71,15 @@
                                 <input type="text" class="form-control" id="state_province" name="state_province"
                                        placeholder="State Province" value="{{$campus->location->state_province}}">
                             </div>
+                            <div class="form-group">
+                                <label for="state_province">Latitude</label>
+                                <input type="text" class="form-control" id="latitude" name="latitude" value="{{$campus->location->latitude}}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="state_province">Latitude</label>
+                                <input type="text" class="form-control" id="longtitude" name="longtitude" value="{{$campus->location->longtitude}}" readonly>
+                            </div>
+                            <div id="map"></div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
 
@@ -80,4 +89,43 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('custom-js')
+    <script>
+        function initMap() {
+            var lat = parseFloat(document.getElementById('latitude').value);
+            var lng = parseFloat(document.getElementById('longtitude').value);
+            if (!isNaN(lat) && !isNaN(lng)) {
+                var pos = {lat: lat, lng: lng};
+            } else {
+                var pos = {lat: -7.258502, lng: 112.751810};
+            }
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: pos,
+            });
+
+            var marker = new google.maps.Marker({
+                draggable: true,
+                position: pos,
+                map: map,
+            });
+
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                document.getElementById('latitude').value = event.latLng.lat();
+                document.getElementById('longtitude').value = event.latLng.lng();
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                document.getElementById('latitude').value = event.latLng.lat();
+                document.getElementById('longtitude').value = event.latLng.lng();
+                marker.setPosition(event.latLng);
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtqb2S0R5L-jBWGyuwhhgF51fMu2q1mlk&callback=initMap">
+    </script>
 @endsection

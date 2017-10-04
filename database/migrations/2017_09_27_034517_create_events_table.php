@@ -23,8 +23,6 @@ class CreateEventsTable extends Migration
             $table->string('photo');
             $table->date('event_date');
             $table->integer('status');
-
-            // $table->timestamps();
         });
     }
 

@@ -69,15 +69,9 @@ class RegisterController extends Controller
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
         $user->photo = 'default.jpg';
+        $user->api_token = str_random(60);
         $user->save();
 
         return $user;
-        // return User::create([
-        //     'role_id' => 1,
-        //     'name' => $data['name'],
-        //     'email' => $data['email'],
-        //     'password' => bcrypt($data['password']),
-        //     'photo' => 'default.jpg'
-        // ]);
     }
 }

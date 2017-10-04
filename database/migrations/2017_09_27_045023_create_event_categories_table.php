@@ -17,7 +17,6 @@ class CreateEventCategoriesTable extends Migration
             $table->increments('category_id');
             $table->integer('main_category_id')->unsigned();
             $table->string('name');
-            // $table->timestamps();
         });
     }
 

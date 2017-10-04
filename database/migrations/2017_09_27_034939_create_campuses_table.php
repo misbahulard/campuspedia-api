@@ -19,8 +19,6 @@ class CreateCampusesTable extends Migration
             $table->string('name');
             $table->string('web');
             $table->string('logo');
-
-            // $table->timestamps();
         });
     }
 

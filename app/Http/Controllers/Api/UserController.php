@@ -66,6 +66,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->photo = 'default.jpg';
+        $user->api_token = str_random(60);
         
         if ($user->save()) {
             return response()->json([

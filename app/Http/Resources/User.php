@@ -19,6 +19,7 @@ class User extends Resource
             'name' => $this->name,
             'email' => $this->email,
             'photo' => $this->photo,
+            'api_token' => $this->api_token,
             'status_code' => 1
         ];
     }

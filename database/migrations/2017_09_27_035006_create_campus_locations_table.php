@@ -21,7 +21,6 @@ class CreateCampusLocationsTable extends Migration
             $table->string('state_province');
             $table->decimal('latitude', 10, 6);
             $table->decimal('longtitude', 10, 6);
-            // $table->timestamps();
         });
     }
 

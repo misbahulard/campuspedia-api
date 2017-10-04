@@ -17,8 +17,6 @@ class CreateRemindersTable extends Migration
             $table->increments('reminder_id');
             $table->integer('user_id')->unsigned();
             $table->integer('event_id')->unsigned();
-
-            // $table->timestamps();
         });
     }
 

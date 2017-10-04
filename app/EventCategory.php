@@ -21,6 +21,6 @@ class EventCategory extends Model
      */
     public function mainCategory()
     {
-        return $this->belongsTo('App\EventMainCategory', 'main_category_id');
+        return $this->belongsTo('App\EventMainCategory', 'main_category_id', 'main_category_id');
     }
 }

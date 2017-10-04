@@ -21,3 +21,15 @@ use Illuminate\Http\Request;
 Route::post('login', 'Api\UserController@login');
 Route::post('register', 'Api\UserController@register');
 Route::get('user/{id}', 'Api\UserController@show');
+
+Route::get('event', 'Api\EventController@index');
+Route::get('event/{id}', 'Api\EventController@show');
+
+Route::get('campus', 'Api\CampusController@index');
+Route::get('campus/{id}', 'Api\CampusController@show');
+
+Route::get('main-category', 'Api\MainCategoryController@index');
+Route::get('main-category/{id}', 'Api\MainCategoryController@show');
+
+Route::get('category', 'Api\CategoryController@index');
+Route::get('category/{id}', 'Api\CategoryController@show');

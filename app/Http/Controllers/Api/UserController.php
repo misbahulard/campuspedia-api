@@ -22,8 +22,12 @@ class UserController extends Controller
             return new UserResource(User::find($id));
         } else {
             return response()->json([
-                'status_code' => 0,
-                'message' => 'User or password not valid'
+                'data' => [
+                    'message' => 'User not found'
+                ],
+                'meta' => [
+                    'status_code' => 0,
+                ]
             ]);
         }
     }
@@ -45,8 +49,12 @@ class UserController extends Controller
             return new UserResource(User::where('email', $credentials['email'])->first());
         } else {
             return response()->json([
-                'status_code' => 0,
-                'message' => 'User or password not valid'
+                'data' => [
+                    'message' => 'User or password not valid',
+                ],
+                'meta' => [
+                    'status_code' => 0,
+                ]
             ]);
         }
     }
@@ -60,23 +68,41 @@ class UserController extends Controller
      **/
     public function register(Request $request)
     {
-        $user = new User;
-        $user->role_id = 2;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->photo = 'default.jpg';
-        $user->api_token = str_random(60);
-        
-        if ($user->save()) {
-            return response()->json([
-                'status_code' => 1,
-                'message' => 'Registration success'
-            ]);
+        if (!User::where('email', '=', $request->email)->exists()) {
+            $user = new User;
+            $user->role_id = 2;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->photo = 'default.jpg';
+            $user->api_token = str_random(60);    
+            if ($user->save()) {
+                return response()->json([
+                    'data' => [
+                        'message' => 'Registration success'
+                    ],
+                    'meta' => [
+                        'status_code' => 1,
+                    ]
+                ]);
+            } else {
+                return response()->json([
+                    'data' => [
+                        'message' => 'Registration failed'
+                    ],
+                    'meta' => [
+                        'status_code' => 0,
+                    ]
+                ]);
+            }
         } else {
             return response()->json([
-                'status_code' => 0,
-                'message' => 'Registration failed'
+                'data' => [
+                    'message' => 'This email has been registered'
+                ],
+                'meta' => [
+                    'status_code' => 0,
+                ]
             ]);
         }
     }

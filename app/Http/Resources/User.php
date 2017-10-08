@@ -15,12 +15,17 @@ class User extends Resource
     public function toArray($request)
     {
         return [
-            'user_id' => $this->user_id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'photo' => $this->photo,
-            'api_token' => $this->api_token,
-            'status_code' => 1
+            'data' => [
+                'user_id' => $this->user_id,
+                'name' => $this->name,
+                'email' => $this->email,
+                'photo' => $this->photo,
+                'api_token' => $this->api_token
+            ],
+            'meta' => [
+                'user_img_path' => url('/') . '/img/users/',
+                'status_code' => 1
+            ]
         ];
     }
 }

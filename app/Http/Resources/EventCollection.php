@@ -17,8 +17,8 @@ class EventCollection extends ResourceCollection
         return [
             'data' => $this->collection,
             'meta' => [
-                'event_img_path' => '/img/events',
-                'campus_img_path' => '/img/campuses',
+                'event_img_path' => url('/') . '/img/events/',
+                'campus_img_path' => url('/') . '/img/campuses/',
                 'status_code' => 1,
             ],
         ];

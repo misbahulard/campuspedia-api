@@ -30,8 +30,12 @@ class CategoryController extends Controller
             return new CategoryResource(EventCategory::find($id));
         } else {
             return response()->json([
-                'status_code' => 0,
-                'message' => 'Category not found!'
+                'data' => [
+                    'message' => 'Category not found!'
+                ],
+                'meta' => [
+                    'status_code' => 0,
+                ]
             ]);
         }
     }

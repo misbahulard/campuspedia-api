@@ -28,8 +28,12 @@ class EventController extends Controller
             return new EventResource(Event::find($id));
         } else {
             return response()->json([
-                'status_code' => 0,
-                'message' => 'Event not found!'
+                'data' => [
+                    'message' => 'Event not found!'
+                ],
+                'meta' => [
+                    'status_code' => 0,
+                ]
             ]);
         }
     }

@@ -28,8 +28,12 @@ class MainCategoryController extends Controller
             return new MainCategoryResource(EventMainCategory::find($id));
         } else {
             return response()->json([
-                'status_code' => 0,
-                'message' => 'Main Category not found!'
+                'data' => [
+                    'message' => 'Main Category not found!'
+                ],
+                'meta' => [
+                    'status_code' => 0,
+                ]
             ]);
         }
     }

@@ -28,8 +28,12 @@ class CampusController extends Controller
             return new CampusResource(Campus::find($id));
         } else {
             return response()->json([
-                'status_code' => 0,
-                'message' => 'Campus not found!'
+                'data' => [
+                    'message' => 'Campus not found!'
+                ],
+                'meta' => [
+                    'status_code' => 0,
+                ]
             ]);
         }
     }

@@ -18,8 +18,8 @@ class EventCollection extends ResourceCollection
             'data' => $this->collection,
             'meta' => [
                 'event_img_path' => url('/') . '/img/events/',
-                'campus_img_path' => url('/') . '/img/campuses/',
                 'status_code' => 1,
+                'message' => 'Get all event success'
             ],
         ];
     }

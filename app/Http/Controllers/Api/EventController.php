@@ -15,7 +15,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        return new EventCollection(Event::paginate());
+        return new EventCollection(Event::orderBy('event_date', 'asc')->paginate());
     }
 
     /**

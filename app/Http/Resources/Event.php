@@ -20,9 +20,10 @@ class Event extends Resource
             'description' => $this->description,
             'photo' => $this->photo,
             'event_date' => $this->event_date,
-            'category' => $this->category,
+            'main_category' => $this->category->mainCategory->name,
+            'category' => $this->category->name,
+            'campus' => $this->campus->name,
             'location' => $this->location,
-            'campus' => $this->campus
         ];
     }
 }
